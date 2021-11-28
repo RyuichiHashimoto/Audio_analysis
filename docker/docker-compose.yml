@@ -1,0 +1,48 @@
+version: '3'
+
+networks:
+ kaggle_network:
+  name: kaggle_network
+  driver: bridge
+  ipam:
+   driver: default
+   config:
+     - subnet: 192.168.100.0/24
+
+services:
+  pythonscript:
+    build:
+      context: .
+      dockerfile: dockerfile
+      shm_size: '2gb'
+
+    container_name: audio_analysis
+    volumes:
+      - /home/ryuichi/.bashrc:/root/.bashrc:ro
+      - /home/ryuichi/.vimrc:/root/.vimrc:ro
+      - /home/ryuichi/.bashrc:/home/jupyter/.bashrc:ro
+      - /home/ryuichi/.vimrc:/root/vimrc:ro
+      - /home/ryuichi/.ssh:/root/.ssh:ro
+      - /home/ryuichi/study/音声解析/:/home/work           
+    working_dir: /home/work  
+    user: 1000:1000
+    ports:
+      - 9000:8888
+    command: jupyter notebook --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token=''
+
+    environment:
+       PYTHONPATH: "/home/work/src_lib"
+       TZ: Asia/Tokyo       
+       HOME: "/home/work"
+       
+    
+    restart: always
+   
+
+
+
+       
+    networks:
+     kaggle_network:
+      ipv4_address: 192.168.100.100
+

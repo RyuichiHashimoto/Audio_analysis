@@ -1,0 +1,31 @@
+FROM kaggle/python-gpu-build
+
+
+RUN pip install --upgrade pip
+#RUN conda update conda
+
+## https://qiita.com/neko-desu/items/3a9ff96e200073e59101
+## 
+RUN pip install jupyter_contrib_nbextensions
+RUN jupyter contrib nbextension install --user
+RUN jupyter contrib nbextension install 
+
+
+RUN jupyter nbextensions_configurator enable
+RUN jupyter nbextensions_configurator enable --user
+
+RUN jupyter nbextension enable codefolding/main
+
+RUN apt-get install -y sudo
+
+
+USER ${DOCKER_USER}
+
+
+
+
+
+
+
+
+
